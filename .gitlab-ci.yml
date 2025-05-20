@@ -1,0 +1,17 @@
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  image: python:3.10
+  script:
+    - pip install -r requirements.txt
+    - echo "Build complete"
+
+test:
+  stage: test
+  image: python:3.10
+  script:
+    - pip install -r requirements.txt
+    - python -m unittest discover -s tests
