@@ -13,3 +13,8 @@ def add_todo():
     data = request.get_json()
     todos.append(data)
     return jsonify({'message': 'Todo added!'}), 201
+
+@todo_bp.route('/', methods=['GET'])
+def home():
+    return jsonify({'message': 'Welcome to the Flask Todo API!'})
+
