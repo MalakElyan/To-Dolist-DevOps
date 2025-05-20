@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - docker_build
 
 build:
   stage: build
@@ -12,6 +13,20 @@ build:
 test:
   stage: test
   image: python:3.10
+  variables:
+    PYTHONPATH: "$CI_PROJECT_DIR"
   script:
     - pip install -r requirements.txt
     - python -m unittest discover -s tests -p "test_*.py"
+
+docker_build:
+  stage: docker_build
+  image: docker:24.0.5  # نسخة حديثة من Docker CLI
+  services:
+    - docker:24.0.5-dind  # Docker in Docker
+  variables:
+    DOCKER_DRIVER: overlay2
+  script:
+    - docker info
+    - docker build -t todo-flask-app .
+    - echo "Docker image built successfully"
