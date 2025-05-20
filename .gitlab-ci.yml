@@ -35,7 +35,7 @@ docker_build:
 
 release:
   stage: release
-  image: alpine:latest
+  image: bash:latest
   script:
     - echo "📦 Release created: v1.0.$CI_PIPELINE_IID"
     - echo "Release info: image=$CI_REGISTRY_IMAGE:latest"
