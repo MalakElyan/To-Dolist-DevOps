@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: todo-flask-app
+    env: docker
+    repo: https://gitlab.com/malakdevops/to-dolist
+    branch: main
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: PORT
+        value: 5000
