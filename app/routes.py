@@ -4,6 +4,11 @@ todo_bp = Blueprint('todo', __name__)
 
 todos = []
 
+@todo_bp.route('/', methods=['GET'])
+def home():
+    return jsonify({'message': 'Welcome to the Flask Todo API!'})
+
+
 @todo_bp.route('/todos', methods=['GET'])
 def get_todos():
     return jsonify(todos)
@@ -13,8 +18,4 @@ def add_todo():
     data = request.get_json()
     todos.append(data)
     return jsonify({'message': 'Todo added!'}), 201
-
-@todo_bp.route('/', methods=['GET'])
-def home():
-    return jsonify({'message': 'Welcome to the Flask Todo API!'})
 
