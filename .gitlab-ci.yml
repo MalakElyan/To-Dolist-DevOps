@@ -33,3 +33,11 @@ docker_build:
     - docker build -t $CI_REGISTRY_IMAGE:latest .
     - docker push $CI_REGISTRY_IMAGE:latest
 
+release:
+  stage: release
+  image: alpine:latest
+  script:
+  - echo "Release created: v1.0.$CI_PIPELINE_IID"
+    - echo "Release info: image=$CI_REGISTRY_IMAGE:latest"
+  only:
+    - main
