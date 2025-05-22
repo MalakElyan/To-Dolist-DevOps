@@ -8,7 +8,21 @@ def get_todos():
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute('SELECT id, task FROM todos;')
-    todos = cur.fetchall()
-    cur.close()
+    rows = cur.fetchall()
     conn.close()
-    return jsonify([{'id': t[0], 'task': t[1]} for t in todos])
+    return jsonify([{'id': row['id'], 'task': row['task']} for row in rows])
+
+@todo_bp.route('/todos', methods=['POST'])
+def add_todo():
+    data = request.get_json()
+    task = data.get('task')
+    if not task:
+        return jsonify({'error': 'Task is required'}), 400
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('INSERT INTO todos (task) VALUES (?);', (task,))
+    conn.commit()
+    new_id = cur.lastrowid
+    conn.close()
+    return jsonify({'id': new_id, 'task': task}), 201
