@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Task</title>
+</head>
+<body>
+    <h1>Edit Task</h1>
+    <form method="POST" action="{{ url_for('todo.update_todo', todo_id=todo['id']) }}">
+        <input type="text" name="task" value="{{ todo['task'] }}">
+        <button type="submit">Update</button>
+    </form>
+    <a href="{{ url_for('todo.index') }}">Cancel</a>
+</body>
+</html>
