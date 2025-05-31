@@ -1,7 +1,12 @@
 from flask import Blueprint, jsonify, request, current_app
+from .db import get_db_connection
 
 todo_bp = Blueprint('todo', __name__)
 
+@todo_bp.route('/')
+def index():
+    return render_template('index.html')
+    
 @todo_bp.route('/todos', methods=['GET'])
 def get_todos():
     conn = current_app.config['GET_DB_CONNECTION']()
