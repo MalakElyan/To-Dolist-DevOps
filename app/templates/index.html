@@ -9,7 +9,8 @@
         {% for todo in todos %}
         <li>
             {{ todo['task'] }}
-            <a href="{{ url_for('todo.delete_todo', todo_id=todo['id']) }}">Delete</a>
+    <a href="{{ url_for('todo.edit_todo', todo_id=todo['id']) }}">Edit</a>
+    <a href="{{ url_for('todo.delete_todo', todo_id=todo['id']) }}">Delete</a>
         </li>
         {% else %}
         <li>No tasks yet.</li>

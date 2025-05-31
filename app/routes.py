@@ -55,3 +55,21 @@ def delete_todo(todo_id):
     conn.commit()
     conn.close()
     return redirect(url_for('todo.index'))
+
+@todo.route('/edit/<int:todo_id>', methods=['GET'])
+def edit_todo(todo_id):
+    conn = get_db_connection()
+    todo = conn.execute('SELECT * FROM todos WHERE id = ?', (todo_id,)).fetchone()
+    conn.close()
+    if todo is None:
+        return 'Task not found', 404
+    return render_template('edit.html', todo=todo)
+
+@todo.route('/update/<int:todo_id>', methods=['POST'])
+def update_todo(todo_id):
+    new_task = request.form['task']
+    conn = get_db_connection()
+    conn.execute('UPDATE todos SET task = ? WHERE id = ?', (new_task, todo_id))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('todo.index'))
