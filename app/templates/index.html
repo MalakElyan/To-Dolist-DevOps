@@ -1,7 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
     <title>Todo List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: white;
+            margin-bottom: 12px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+        }
+        li a {
+            color: #e74c3c;
+            text-decoration: none;
+            font-weight: bold;
+            border: 1.5px solid #e74c3c;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        li a:hover {
+            background-color: #e74c3c;
+            color: white;
+        }
+        form {
+            margin-top: 30px;
+            display: flex;
+            gap: 12px;
+        }
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 10px 14px;
+            font-size: 16px;
+            border: 1.5px solid #ccc;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #2980b9;
+            outline: none;
+        }
+        button {
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #1c5980;
+        }
+        .edit-link {
+            margin-left: 10px;
+            color: #2980b9;
+            font-weight: bold;
+            text-decoration: none;
+            border: 1.5px solid #2980b9;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .edit-link:hover {
+            background-color: #2980b9;
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <h1>My Tasks</h1>
@@ -9,8 +96,10 @@
         {% for todo in todos %}
         <li>
             {{ todo['task'] }}
-    <a href="{{ url_for('todo.edit_todo', todo_id=todo['id']) }}">Edit</a>
-    <a href="{{ url_for('todo.delete_todo', todo_id=todo['id']) }}">Delete</a>
+            <div>
+                <a class="edit-link" href="{{ url_for('todo.edit_todo', todo_id=todo['id']) }}">Edit</a>
+                <a href="{{ url_for('todo.delete_todo', todo_id=todo['id']) }}">Delete</a>
+            </div>
         </li>
         {% else %}
         <li>No tasks yet.</li>
@@ -19,8 +108,9 @@
 
     <h2>Add Task</h2>
     <form method="POST" action="{{ url_for('todo.add_todo_html') }}">
-        <input type="text" name="task" placeholder="New task">
+        <input type="text" name="task" placeholder="New task" required />
         <button type="submit">Add</button>
     </form>
 </body>
 </html>
+
