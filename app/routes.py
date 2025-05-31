@@ -1,11 +1,10 @@
-from flask import Blueprint, jsonify, request
-from .db import get_db_connection
+from flask import Blueprint, jsonify, request, current_app
 
 todo_bp = Blueprint('todo', __name__)
 
 @todo_bp.route('/todos', methods=['GET'])
 def get_todos():
-    conn = get_db_connection()
+    conn = current_app.config['GET_DB_CONNECTION']()
     cur = conn.cursor()
     cur.execute('SELECT id, task FROM todos;')
     rows = cur.fetchall()
@@ -19,7 +18,7 @@ def add_todo():
     if not task:
         return jsonify({'error': 'Task is required'}), 400
 
-    conn = get_db_connection()
+    conn = current_app.config['GET_DB_CONNECTION']()
     cur = conn.cursor()
     cur.execute('INSERT INTO todos (task) VALUES (?);', (task,))
     conn.commit()
