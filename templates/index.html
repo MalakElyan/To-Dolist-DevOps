@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>قائمة المهام</title>
+    <style>
+        body { font-family: Arial; padding: 20px; direction: rtl; }
+        ul { list-style: none; padding: 0; }
+        li { background: #f2f2f2; margin: 5px 0; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>قائمة المهام</h1>
+    
+    <form id="todo-form">
+        <input type="text" id="task-input" placeholder="أدخل مهمة جديدة" required>
+        <button type="submit">إضافة</button>
+    </form>
+
+    <ul id="todo-list"></ul>
+
+    <script>
+        const list = document.getElementById('todo-list');
+        const form = document.getElementById('todo-form');
+        const input = document.getElementById('task-input');
+
+        // جلب المهام من السيرفر
+        async function fetchTodos() {
+            const response = await fetch('/todos');
+            const todos = await response.json();
+            list.innerHTML = '';
+            todos.forEach(todo => {
+                const li = document.createElement('li');
+                li.textContent = todo.task;
+                list.appendChild(li);
+            });
+        }
+
+        // إضافة مهمة جديدة
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const task = input.value.trim();
+            if (!task) return;
+
+            await fetch('/todos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ task })
+            });
+
+            input.value = '';
+            fetchTodos();
+        });
+
+        // تحميل المهام عند فتح الصفحة
+        fetchTodos();
+    </script>
+</body>
+</html>
