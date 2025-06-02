@@ -40,58 +40,74 @@
       border-radius: 6px;
       cursor: pointer;
     }
+    button:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
 
   <h1>My Tasks</h1>
+
+  <!-- زر فتح النافذة المنبثقة -->
   <button id="openModal">+</button>
-  <input type="text" placeholder="Search tasks..." />
 
-  <!-- زر الإضافة يفتح النموذج -->
-<button onclick="document.getElementById('add-form').style.display='block'">+</button>
+  <!-- خانة بحث المهام -->
+  <input type="text" id="searchInput" placeholder="Search tasks..." onkeyup="filterTasks()" />
 
-<!-- نموذج إضافة المهمة -->
-<div id="add-form" style="display:none; margin-top: 20px;">
-    <form method="POST" action="{{ url_for('todo.add_todo_html') }}">
-        <input type="text" name="task" placeholder="Task name" required><br><br>
-        <label>Due Date:</label>
-        <input type="date" name="due_date"><br><br>
-        <label>
-            <input type="checkbox" name="reminder"> Set Reminder
-        </label><br><br>
-        <button type="submit">Save</button>
-        <button type="button" onclick="document.getElementById('add-form').style.display='none'">Cancel</button>
-    </form>
-</div>
+  <!-- قائمة المهام -->
+  <!-- داخل <ul id="taskList"> -->
 
-  <ul>
-    {% for todo in todos if todo['completed'] %}
-      <li><s>{{ todo['task'] }}</s></li>
+<ul id="taskList">
+    {% for todo in todos %}
+      <li>
+        <div style="margin-bottom: 5px;">
+          {% if todo['completed'] %}
+            <s>{{ todo['task'] }}</s>
+          {% else %}
+            {{ todo['task'] }}
+          {% endif %}
+          {% if todo['due_date'] %}
+            <div><small>Due: {{ todo['due_date'] }}</small></div>
+          {% endif %}
+          {% if todo['reminder'] %}
+            <div><small>🔔 Reminder set</small></div>
+          {% endif %}
+          {% if todo['completed'] %}
+            <div><small>✅ Completed</small></div>
+          {% else %}
+            <div><small>⬜ Not completed</small></div>
+          {% endif %}
+        </div>
+        <a href="{{ url_for('todo.edit_todo', todo_id=todo['id']) }}">Edit</a>
+        <a href="{{ url_for('todo.delete_todo', todo_id=todo['id']) }}" onclick="return confirm('Are you sure?');">Delete</a>
+      </li>
     {% endfor %}
   </ul>
+  
 
-  <!-- نافذة الإضافة -->
+  <!-- نافذة إضافة مهمة -->
   <div id="taskModal" class="modal">
     <div class="modal-content">
       <span class="close" id="closeModal">&times;</span>
-      <form method="POST" action="/add">
+      <form method="POST" action="{{ url_for('todo.add_todo_html') }}">
         <label for="task">Task</label>
-        <input type="text" name="task" required>
+        <input type="text" id="task" name="task" placeholder="Task name" required>
 
         <label for="due_date">Due Date</label>
-        <input type="date" name="due_date">
+        <input type="date" id="due_date" name="due_date">
 
         <label>
-          <input type="checkbox" name="reminder"> Reminder
+          <input type="checkbox" name="reminder"> Set Reminder
         </label>
 
-        <button type="submit">تم</button>
+        <button type="submit">Save</button>
       </form>
     </div>
   </div>
 
   <script>
+    // فتح وغلق النافذة المنبثقة
     const modal = document.getElementById("taskModal");
     const openBtn = document.getElementById("openModal");
     const closeBtn = document.getElementById("closeModal");
@@ -101,6 +117,21 @@
     window.onclick = (e) => {
       if (e.target === modal) modal.style.display = "none";
     };
+
+    // فلترة المهام حسب البحث
+    function filterTasks() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const list = document.getElementById('taskList');
+      const items = list.getElementsByTagName('li');
+      for(let i=0; i < items.length; i++){
+        const taskText = items[i].textContent.toLowerCase();
+        if(taskText.indexOf(input) > -1){
+          items[i].style.display = "";
+        } else {
+          items[i].style.display = "none";
+        }
+      }
+    }
   </script>
 
 </body>
