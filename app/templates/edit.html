@@ -22,16 +22,23 @@
             flex-direction: column;
             gap: 20px;
         }
-        input[type="text"] {
+        input[type="text"],
+        input[type="date"] {
             padding: 12px 16px;
             font-size: 18px;
             border: 1.5px solid #ccc;
             border-radius: 8px;
             transition: border-color 0.3s;
+            width: 100%;
         }
-        input[type="text"]:focus {
+        input[type="text"]:focus,
+        input[type="date"]:focus {
             border-color: #2980b9;
             outline: none;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
         }
         button {
             background-color: #27ae60;
@@ -66,8 +73,24 @@
 <body>
     <h1>Edit Task</h1>
     <form method="POST" action="{{ url_for('todo.update_todo', todo_id=todo['id']) }}">
-        <input type="text" name="task" value="{{ todo['task'] }}" required />
+        <label for="task">Task</label>
+        <input type="text" id="task" name="task" value="{{ todo['task'] }}" required />
+
+        <label for="due_date">Due Date</label>
+        <input type="date" id="due_date" name="due_date" value="{{ todo['due_date'] if todo['due_date'] else '' }}">
+
+        <label>
+            <input type="checkbox" name="reminder" {% if todo['reminder'] %}checked{% endif %}>
+            Set Reminder
+        </label>
+
         <button type="submit">Save</button>
+
+        <label>
+            <input type="checkbox" name="completed" {% if todo['completed'] %}checked{% endif %}>
+            Mark as Completed
+          </label>
+          
     </form>
     <a href="{{ url_for('todo.index') }}">Back to List</a>
 </body>

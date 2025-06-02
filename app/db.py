@@ -1,20 +1,21 @@
-import sqlite3
+import psycopg2
 import os
 
-# تحديد مسار ملف قاعدة البيانات
-DATABASE = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'todo.db')
-
 def get_db_connection():
-    conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row  # حتى يرجع الصفوف كقواميس بدلاً من tuples
-    return conn
+    return psycopg2.connect(os.environ['DATABASE_URL'])
 
 def init_db():
-    with get_db_connection() as conn:
-        conn.execute('''
-            CREATE TABLE IF NOT EXISTS todos (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                task TEXT NOT NULL
-            );
-        ''')
-        conn.commit()
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS todos (
+            id SERIAL PRIMARY KEY,
+            task TEXT NOT NULL,
+            due_date DATE,
+            reminder BOOLEAN DEFAULT FALSE,
+            completed BOOLEAN DEFAULT FALSE
+        );
+    ''')
+    conn.commit()
+    cur.close()
+    conn.close()
