@@ -1,20 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo List</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            color: #333;
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 0 20px;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 1rem;
+            background-color: #f9f9f9;
         }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .add-btn {
+            font-size: 1.5rem;
+            padding: 0.3rem 0.8rem;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 50%;
+        }
+        .search-bar {
+            width: 100%;
+            margin: 1rem 0;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 0.6rem;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+        .section {
+            margin-bottom: 2rem;
+        }
+        .section h3 {
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 0.5rem;
         }
         ul {
             list-style: none;
@@ -22,95 +47,36 @@
         }
         li {
             background: white;
-            margin-bottom: 12px;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 18px;
-        }
-        li a {
-            color: #e74c3c;
-            text-decoration: none;
-            font-weight: bold;
-            border: 1.5px solid #e74c3c;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        li a:hover {
-            background-color: #e74c3c;
-            color: white;
-        }
-        form {
-            margin-top: 30px;
-            display: flex;
-            gap: 12px;
-        }
-        input[type="text"] {
-            flex-grow: 1;
-            padding: 10px 14px;
-            font-size: 16px;
-            border: 1.5px solid #ccc;
-            border-radius: 8px;
-            transition: border-color 0.3s;
-        }
-        input[type="text"]:focus {
-            border-color: #2980b9;
-            outline: none;
-        }
-        button {
-            background-color: #2980b9;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #1c5980;
-        }
-        .edit-link {
-            margin-left: 10px;
-            color: #2980b9;
-            font-weight: bold;
-            text-decoration: none;
-            border: 1.5px solid #2980b9;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .edit-link:hover {
-            background-color: #2980b9;
-            color: white;
+            margin: 0.5rem 0;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
-    <h1>My Tasks</h1>
-    <ul>
-        {% for todo in todos %}
-        <li>
-            {{ todo['task'] }}
-            <div>
-                <a class="edit-link" href="{{ url_for('todo.edit_todo', todo_id=todo['id']) }}">Edit</a>
-                <a href="{{ url_for('todo.delete_todo', todo_id=todo['id']) }}">Delete</a>
-            </div>
-        </li>
-        {% else %}
-        <li>No tasks yet.</li>
-        {% endfor %}
-    </ul>
+    <header>
+        <h1>My Tasks</h1>
+        <button class="add-btn">+</button>
+    </header>
 
-    <h2>Add Task</h2>
-    <form method="POST" action="{{ url_for('todo.add_todo_html') }}">
-        <input type="text" name="task" placeholder="New task" required />
-        <button type="submit">Add</button>
-    </form>
+    <div class="search-bar">
+        <input type="text" placeholder="Search tasks...">
+    </div>
+
+    <div class="section">
+        <h3>Ongoing Tasks</h3>
+        <ul id="ongoing-tasks">
+            <li>Learn Flask</li>
+            <li>Build To-Do App</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h3>Completed Tasks</h3>
+        <ul id="completed-tasks">
+            <li><s>Setup project</s></li>
+        </ul>
+    </div>
 </body>
 </html>
-
