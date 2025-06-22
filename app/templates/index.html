@@ -136,6 +136,18 @@
     button[type="submit"]:hover {
       background-color: #4c4fbd;
     }
+
+    #confirmDeleteModal .modal-content button {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    #confirmDeleteModal .modal-content button:hover {
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
@@ -168,11 +180,12 @@
           {% endif %}
         </div>
         <a href="{{ url_for('todo.edit_todo', todo_id=todo['id']) }}">Edit</a>
-        <a href="{{ url_for('todo.delete_todo', todo_id=todo['id']) }}" onclick="return confirm('Are you sure?');">Delete</a>
+        <a href="#" class="delete-btn" data-url="{{ url_for('todo.delete_todo', todo_id=todo['id']) }}">Delete</a>
       </li>
     {% endfor %}
   </ul>
 
+  <!-- نافذة إضافة مهمة -->
   <div id="taskModal" class="modal">
     <div class="modal-content">
       <span class="close" id="closeModal">&times;</span>
@@ -192,17 +205,61 @@
     </div>
   </div>
 
+  <!-- نافذة تأكيد الحذف -->
+  <div id="confirmDeleteModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="cancelDeleteModal">&times;</span>
+      <p style="margin-bottom: 20px;">❗ هل أنتِ متأكدة من حذف هذه المهمة؟</p>
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button id="cancelBtn" style="background-color: #6c757d;">إلغاء</button>
+        <button id="confirmBtn" style="background-color: #dc3545;">نعم، احذف</button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // نافذة إضافة مهمة
     const modal = document.getElementById("taskModal");
     const openBtn = document.getElementById("openModal");
     const closeBtn = document.getElementById("closeModal");
 
     openBtn.onclick = () => modal.style.display = "flex";
     closeBtn.onclick = () => modal.style.display = "none";
-    window.onclick = (e) => {
-      if (e.target === modal) modal.style.display = "none";
+
+    // نافذة تأكيد الحذف
+    const confirmModal = document.getElementById("confirmDeleteModal");
+    const cancelDeleteModal = document.getElementById("cancelDeleteModal");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const confirmBtn = document.getElementById("confirmBtn");
+    let deleteUrl = "";
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        deleteUrl = this.getAttribute('data-url');
+        confirmModal.style.display = "flex";
+      });
+    });
+
+    cancelBtn.onclick = cancelDeleteModal.onclick = () => {
+      confirmModal.style.display = "none";
+      deleteUrl = "";
     };
 
+    confirmBtn.onclick = () => {
+      window.location.href = deleteUrl;
+    };
+
+    // إغلاق أي نافذة عند الضغط خارجها
+    window.onclick = (e) => {
+      if (e.target === modal || e.target === confirmModal) {
+        modal.style.display = "none";
+        confirmModal.style.display = "none";
+        deleteUrl = "";
+      }
+    };
+
+    // البحث في المهام
     function filterTasks() {
       const input = document.getElementById('searchInput').value.toLowerCase();
       const list = document.getElementById('taskList');
