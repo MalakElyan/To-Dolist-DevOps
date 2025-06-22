@@ -68,7 +68,7 @@ def add_todo():
 @todo_bp.route('/add', methods=['POST'])
 def add_todo_html():
     task = request.form.get('task')
-    due_date = request.form.get('due_date')
+    due_date = request.form.get('due_date') or None
     reminder = request.form.get('reminder') == 'on'
 
     if task:
@@ -117,15 +117,15 @@ def edit_todo(todo_id):
 @todo_bp.route('/update/<int:todo_id>', methods=['POST'])
 def update_todo(todo_id):
     new_task = request.form['task']
-    new_due_date = request.form.get('due_date')
+    new_due_date = request.form.get('due_date') or None
     new_reminder = request.form.get('reminder') == 'on'
     new_completed = request.form.get('completed') == 'on'
- 
+
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute(
-    'UPDATE todos SET task = %s, due_date = %s, reminder = %s, completed = %s WHERE id = %s',
-    (new_task, new_due_date, new_reminder, new_completed, todo_id)
+        'UPDATE todos SET task = %s, due_date = %s, reminder = %s, completed = %s WHERE id = %s',
+        (new_task, new_due_date, new_reminder, new_completed, todo_id)
     )
     conn.commit()
     conn.close()
