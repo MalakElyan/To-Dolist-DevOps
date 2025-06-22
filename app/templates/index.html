@@ -5,43 +5,136 @@
   <title>My Tasks</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <style>
-    /* تنسيقات بسيطة للنافذة المنبثقة */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #5e60ce;
+      margin-bottom: 20px;
+    }
+
+    #openModal {
+      display: block;
+      margin: 0 auto 20px auto;
+      background-color: #5e60ce;
+      color: white;
+      font-size: 24px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    #searchInput {
+      display: block;
+      margin: 0 auto 20px auto;
+      width: 90%;
+      max-width: 400px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    ul#taskList {
+      list-style: none;
+      padding: 0;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    ul#taskList li {
+      background-color: #fff;
+      margin-bottom: 15px;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+
+    ul#taskList li:hover {
+      transform: scale(1.01);
+    }
+
+    ul#taskList li a {
+      margin-right: 10px;
+      color: #5e60ce;
+      text-decoration: none;
+    }
+
+    ul#taskList li a:hover {
+      text-decoration: underline;
+    }
+
     .modal {
       display: none;
       position: fixed;
       z-index: 10;
       left: 0; top: 0; width: 100%; height: 100%;
-      background-color: rgba(0,0,0,0.4);
+      background-color: rgba(0, 0, 0, 0.4);
       justify-content: center;
       align-items: center;
     }
+
     .modal-content {
-      background-color: #fff;
-      padding: 20px;
+      background-color: white;
+      padding: 25px;
       border-radius: 12px;
       width: 90%;
       max-width: 400px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      position: relative;
     }
+
     .close {
-      float: right;
-      font-size: 20px;
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 22px;
       cursor: pointer;
+      color: #aaa;
     }
-    input, label {
-      display: block;
+
+    .close:hover {
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="date"] {
       width: 100%;
-      margin: 10px 0;
+      padding: 10px;
+      margin: 8px 0 15px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
     }
-    button {
-      padding: 10px 15px;
-      background-color: #007BFF;
-      border: none;
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+      color: #333;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #5e60ce;
       color: white;
-      border-radius: 6px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #0056b3;
+
+    button[type="submit"]:hover {
+      background-color: #4c4fbd;
     }
   </style>
 </head>
@@ -49,29 +142,24 @@
 
   <h1>My Tasks</h1>
 
-  <!-- زر فتح النافذة المنبثقة -->
   <button id="openModal">+</button>
 
-  <!-- خانة بحث المهام -->
   <input type="text" id="searchInput" placeholder="Search tasks..." onkeyup="filterTasks()" />
 
-  <!-- قائمة المهام -->
-  <!-- داخل <ul id="taskList"> -->
-
-<ul id="taskList">
+  <ul id="taskList">
     {% for todo in todos %}
       <li>
-        <div style="margin-bottom: 5px;">
+        <div>
           {% if todo['completed'] %}
             <s>{{ todo['task'] }}</s>
           {% else %}
             {{ todo['task'] }}
           {% endif %}
           {% if todo['due_date'] %}
-            <div><small>Due: {{ todo['due_date'] }}</small></div>
+            <div><small>📅 Due: {{ todo['due_date'] }}</small></div>
           {% endif %}
           {% if todo['reminder'] %}
-            <div><small>🔔 Reminder set</small></div>
+            <div><small>🔔 Reminder</small></div>
           {% endif %}
           {% if todo['completed'] %}
             <div><small>✅ Completed</small></div>
@@ -84,9 +172,7 @@
       </li>
     {% endfor %}
   </ul>
-  
 
-  <!-- نافذة إضافة مهمة -->
   <div id="taskModal" class="modal">
     <div class="modal-content">
       <span class="close" id="closeModal">&times;</span>
@@ -107,7 +193,6 @@
   </div>
 
   <script>
-    // فتح وغلق النافذة المنبثقة
     const modal = document.getElementById("taskModal");
     const openBtn = document.getElementById("openModal");
     const closeBtn = document.getElementById("closeModal");
@@ -118,18 +203,13 @@
       if (e.target === modal) modal.style.display = "none";
     };
 
-    // فلترة المهام حسب البحث
     function filterTasks() {
       const input = document.getElementById('searchInput').value.toLowerCase();
       const list = document.getElementById('taskList');
       const items = list.getElementsByTagName('li');
       for(let i=0; i < items.length; i++){
         const taskText = items[i].textContent.toLowerCase();
-        if(taskText.indexOf(input) > -1){
-          items[i].style.display = "";
-        } else {
-          items[i].style.display = "none";
-        }
+        items[i].style.display = taskText.includes(input) ? "" : "none";
       }
     }
   </script>
