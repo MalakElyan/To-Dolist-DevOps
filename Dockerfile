@@ -15,4 +15,3 @@ ENV PORT=5000
 
 # أمر تشغيل التطبيق
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "run:app"]
-
