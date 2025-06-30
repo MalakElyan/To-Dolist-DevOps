@@ -1,4 +1,4 @@
 flask
 Jinja2
 psycopg2-binary
-RUN pip install gunicorn
+gunicorn==20.1.0
