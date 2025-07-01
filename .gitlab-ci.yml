@@ -33,11 +33,11 @@ release:
   stage: release
   image: alpine:latest
   script:
-    - echo "Release created: $CI_COMMIT_REF_NAME"
+    - echo "Release created: v1.0.${CI_PIPELINE_IID}"
+    - echo "Release info: image=${CI_REGISTRY_IMAGE}:latest"
   only:
     - main
-    - staging
-    - dev
+
 
 deploy_dev:
   stage: deploy
