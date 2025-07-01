@@ -69,4 +69,3 @@ deploy:
     - docker push $CI_REGISTRY_IMAGE:latest
   only:
     - main
-
