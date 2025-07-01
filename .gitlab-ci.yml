@@ -57,15 +57,3 @@ deploy:
   only:
     - main
 
-  docker_push:
-  stage: release
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_TLS_CERTDIR: ""
-  script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    - docker push $CI_REGISTRY_IMAGE:latest
-  only:
-    - main
