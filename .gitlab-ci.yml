@@ -3,7 +3,6 @@ stages:
   - test
   - docker_build
   - release
-  - deploy
 
 build:
   stage: build
@@ -11,6 +10,10 @@ build:
   script:
     - pip install -r requirements.txt
     - echo "Build complete"
+  only:
+    - dev
+    - staging
+    - main
 
 test:
   stage: test
@@ -18,68 +21,32 @@ test:
   script:
     - pip install -r requirements.txt
     - python -m unittest discover -s tests -p "test_*.py"
+  only:
+    - dev
+    - staging
+    - main
 
 docker_build:
   stage: docker_build
   image: docker:24.0.5
   services:
     - docker:24.0.5-dind
+  variables:
+    DOCKER_DRIVER: overlay2
   script:
     - echo "$CI_JOB_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  only:
+    - dev
+    - staging
+    - main
 
 release:
   stage: release
   image: alpine:latest
   script:
-    - echo "Release created: v1.0.${CI_PIPELINE_IID}"
-    - echo "Release info: image=${CI_REGISTRY_IMAGE}:latest"
-  only:
-    - main
-
-
-deploy_dev:
-  stage: deploy
-  image: docker:24.0.5
-  services:
-    - docker:24.0.5-dind
-  script:
-    - echo "Deploying to dev environment"
-    - docker pull $CI_REGISTRY_IMAGE:dev
-    - docker run -d -p 5000:5000 $CI_REGISTRY_IMAGE:dev
-  environment:
-    name: dev
-    url: https://dev.yourapp.com
-  only:
-    - dev
-
-deploy_staging:
-  stage: deploy
-  image: docker:24.0.5
-  services:
-    - docker:24.0.5-dind
-  script:
-    - echo "Deploying to staging environment"
-    - docker pull $CI_REGISTRY_IMAGE:staging
-    - docker run -d -p 5000:5000 $CI_REGISTRY_IMAGE:staging
-  environment:
-    name: staging
-    url: https://staging.yourapp.com
-  only:
-    - staging
-
-deploy_production:
-  stage: deploy
-  image: docker:24.0.5
-  services:
-    - docker:24.0.5-dind
-  script:
-    - echo "Deploying to production environment"
-    - docker pull $CI_REGISTRY_IMAGE:main
-    - docker run -d -p 5000:5000 $CI_REGISTRY_IMAGE:main
-  environment:
-    name: production
-    url: https://yourapp.com
+    - echo "Release created: v1.0.${CI_PIPELINE_IID} for branch $CI_COMMIT_REF_NAME"
+    - echo "Image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
   only:
     - main
