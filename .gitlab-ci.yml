@@ -56,4 +56,3 @@ deploy:
     - echo "Deployed image to container"
   only:
     - main
-
