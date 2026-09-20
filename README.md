@@ -61,11 +61,16 @@ To-Dolist-DevOps/
 
 ---
 
-## 📄 [Read Full DevOps Architecture & Benchmarking Report](./docs/malakelyan__DevOpsFinalProject.pdf)
+## 📄 Documentation
+
+* **DevOps Architecture & Benchmarking Report:** [Read Report (PDF)](Docs/malakelyan__DevOpsFinalProject.pdf)
+
 ---
 
 ## 🔗 Connect with Me 
 - 🐙 **GitHub:** [@MalakElyan](https://github.com/MalakElyan)
 - 💼 **LinkedIn:** [Malak Elyan](https://www.linkedin.com/in/malak-elyan)
+
+---
 
 *Developed by* **Malak Elyan** *as part of the Software Development &amp; DevOps curriculum at UCAS Gaza.*
