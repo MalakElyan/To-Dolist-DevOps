@@ -1,4 +1,3 @@
-```
 # 🚀 Flask To-Do App — Automated DevOps CI/CD Pipeline &amp; Cloud Deployment
 
 ![Flask](https://img.shields.io/badge/Flask-3.10-000000?style=for-the-badge&amp;logo=flask&amp;logoColor=white)
