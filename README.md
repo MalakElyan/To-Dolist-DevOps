@@ -61,8 +61,7 @@ To-Dolist-DevOps/
 
 ---
 
-## 📄 [Read Full DevOps Architecture &amp; Benchmarking Report](docs/malakelyan__DevOpsFinalProject.pdf)
-
+## 📄 [Read Full DevOps Architecture & Benchmarking Report](./docs/malakelyan__DevOpsFinalProject.pdf)
 ---
 
 ## 🔗 Connect with Me 
