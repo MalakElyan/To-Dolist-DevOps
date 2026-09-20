@@ -1,95 +1,65 @@
-# To-Dolist
+```
+# 🚀 Flask To-Do App — Automated DevOps CI/CD Pipeline &amp; Cloud Deployment
 
+![Flask](https://img.shields.io/badge/Flask-3.10-000000?style=for-the-badge&amp;logo=flask&amp;logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&amp;logo=postgresql&amp;logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&amp;logo=docker&amp;logoColor=white)
+![GitLab CI/CD](https://img.shields.io/badge/GitLab_CI%2FCD-Automated_Pipeline-FC6D26?style=for-the-badge&amp;logo=gitlab&amp;logoColor=white)
+![Render](https://img.shields.io/badge/Render-Cloud_Deploy-46E3B7?style=for-the-badge&amp;logo=render&amp;logoColor=white)
 
+An end-to-end **DevOps &amp; Cloud Infrastructure project** demonstrating a full-stack Flask task management application. It features automated schema initialization for PostgreSQL, containerization using Docker, automated unit testing, container image registry management, and continuous deployment to Render.com.
 
-## Getting started
+---
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## 📌 CI/CD Pipeline Architecture
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+The automated GitLab CI/CD pipeline (`.gitlab-ci.yml`) is structured into **5 sequential stages**:
 
-## Add your files
+1. ⚙️ **Build:** Installs all Python dependencies listed in `requirements.txt`.
+2. 🧪 **Test:** Executes automated unit tests (`tests/test_api.py`) via `unittest` to verify API endpoint integrity.
+3. 🐳 **Docker Build:** Builds a lightweight production-ready Docker container image using `python:3.10-slim`.
+4. 📦 **Release/Push:** Authenticates and pushes the container image to the GitLab Container Registry.
+5. 🚀 **Deploy:** Automatically triggers the live web deployment on Render.com.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+---
+
+## 🛠️ Project Structure &amp; Key Files
+
+```text
+To-Dolist-DevOps/
+├── app/
+│   ├── templates/      # HTML views (index.html, edit.html)
+│   ├── __init__.py      # Flask Application Factory &amp; DB initialization
+│   ├── routes.py        # Task management API endpoints &amp; CRUD logic
+│   └── db.py            # Low-level PostgreSQL connection &amp; table schema creation
+├── tests/
+│   └── test_api.py      # Automated unit tests for API endpoints
+├── .gitlab-ci.yml       # Complete CI/CD pipeline definitions
+├── Dockerfile           # Docker container image build instructions
+├── render.yaml          # Render cloud deployment specification
+├── requirements.txt     # Python package dependencies
+└── run.py               # Main application entry point
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/malakdevops/to-dolist.git
-git branch -M main
-git push -uf origin main
-```
 
-## Integrate with your tools
+---
 
-- [ ] [Set up project integrations](https://gitlab.com/malakdevops/to-dolist/-/settings/integrations)
+## ⚔️ DevOps Benchmarking: GitLab vs. Azure DevOps
 
-## Collaborate with your team
+| Feature                    | GitLab DevOps                             | Azure DevOps                                            |
+| -------------------------- | ----------------------------------------- | ------------------------------------------------------- |
+| **CI/CD Execution**        | ✅ Smooth 5-stage pipeline execution       | ⚠️ Blocked by free-tier parallelism limits              |
+| **Container Registry**     | ✅ Built-in Container Registry             | ❌ Requires external/paid setup                          |
+| **Agile Task Tracking**    | 🟢 Basic Issues &amp; Kanban boards           | ✅ Advanced sprint &amp; work item tracking via Azure Boards |
+| **Deployment Integration** | ✅ Direct seamless integration with Render | ⚠️ Restricted student subscription access               |
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+---
 
-## Test and Deploy
+## 🌐 Live Demo &amp; Links
 
-Use the built-in continuous integration in GitLab.
+* 🔗 **Live Web Application:** [to-dolist-ii06.onrender.com](https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fto-dolist-ii06.onrender.com)
+* 🐙 **Source Code Repository:** [GitHub - MalakElyan/To-Dolist-DevOps](https://www.google.com/url?sa=E&amp;q=https%3A%2F%2Fgithub.com%2FMalakElyan%2FTo-Dolist-DevOps)
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+---
 
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
-
-# تم التعديل في فرع test-merge
+*Developed by* **Malak Elyan** *as part of the Software Development &amp; DevOps curriculum at UCAS Gaza.*
