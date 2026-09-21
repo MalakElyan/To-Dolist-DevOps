@@ -80,7 +80,7 @@ To-Dolist-DevOps/
 ---
 
 ## 🔒 Copyright & Terms of Use
-© 2026 **Malak Elyan**. All rights reserved.
+© 2025 **Malak Elyan**. All rights reserved.
 
 ---
 
